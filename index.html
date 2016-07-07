@@ -122,32 +122,26 @@
     
     <div ng-controller="TranslatorCtrl">
         <div>
-            <h2>Вставьте или введите текст:</h2>
-            <textarea name="text" id="text" cols="60" rows="3" ng-model="text" ng-change="change()"></textarea>
-        </div>
-        <div>
             <h2>Тарабарщина:</h2>
-            <span id="gibberish"> т̂бл̇цы с̌ случ̂йн̌ р̂сп̌л̌ӝнным̇ объект̂м̇ (обычн̌ ч̇сл̂м̇ ил̇ букв̂м̇), служ̂щ̇е для пр̌в̈рк̇ и р̂зв̇т̇я быстр̌ты н̂х̌жд̈н̇я эт̇х объект̌в в опр̈д̈лённ̌м п̌рядк̈. Упр̂жн̈н̇я с т̂бл̇ц̂м̇ п̌зв̌ляют улучш̇ть п̈р̇ф̈р̇ӵск̌е зр̇т̈льн̌е в̌спр̇ят̇е, чт̌ в̂жн̌, н̂пр̇м̈р, для ск̌р̌чт̈н̇я </span>
+            <span id="gibberish"> {{ gibberish }} </span>
         </div>
         <h3>Статистика:</h3>
-        <div> 282 - 0 = 282 </div>
-        <div>% 0 * 100 : 282 = 0 </div>
+        <div> {{ text.length }} - {{ gibberishLength }} = {{ text.length - gibberishLength }} <div>
+        <div>% {{ gibberishLength }} * 100 : {{ text.length }} = {{ gibberishLength * 100 / text.length }} <div>
         <h3>Разшифровка:</h3>
         <table>
-            <tbody>
-                <tr>
-                    <td>б̌ бо </td>
-                </tr>
-                <tr>
-                    <td>б̈ бе</td>
-                </tr>
-                <tr>
-                    <td>б̇ би</td>
-                </tr>
-                <tr>
-                    <td>б̂ ба</td>
-                </tr>
-            </tbody>
+          <tr>
+            <td>б&#780; бо </td>
+          </tr>
+          <tr>
+            <td>б&#776; бе</td>
+          </tr>
+          <tr>
+            <td>б&#775; би</td>
+          </tr>
+          <tr>
+            <td>б&#770; ба</td>
+          </tr>
         </table>
     </div>
 </body>
