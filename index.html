@@ -7,7 +7,7 @@
         <script src="js/angular.min.js"></script>
         <style>
             body {
-                font-family: Arial,Helvetica,sans-serif;
+                font-family: monospace;
                 font-size: 14px;
             }
         </style>
@@ -28,89 +28,89 @@
             $scope.gibberishLength = 0;
             $scope.change = function() {
                 $scope.gibberish = $scope.text
-                  .replace(/бо/g,"б\u030C")
-                  .replace(/во/g,"в\u030C")
-                  .replace(/го/g,"г\u030C")
-                  .replace(/до/g,"д\u030C")
-                  .replace(/жо/g,"ж\u030C")
-                  .replace(/зо/g,"з\u030C")
-                  .replace(/ко/g,"к\u030C")
-                  .replace(/ло/g,"л\u030C")
-                  .replace(/мо/g,"м\u030C")
-                  .replace(/но/g,"н\u030C")
-                  .replace(/по/g,"п\u030C")
-                  .replace(/ро/g,"р\u030C")
-                  .replace(/со/g,"с\u030C")
-                  .replace(/то/g,"т\u030C")
-                  .replace(/фо/g,"ф\u030C")
-                  .replace(/хо/g,"х\u030C")
-                  .replace(/цо/g,"ц\u030C")
-                  .replace(/чо/g,"ч\u030C")
-                  .replace(/шо/g,"ш\u030C")
-                  .replace(/що/g,"щ\u030C")
+                  .replace(/бо/g,"\u030Cб")
+                  .replace(/во/g,"\u030Cв")
+                  .replace(/го/g,"\u030Cг")
+                  .replace(/до/g,"\u030Cд")
+                  .replace(/жо/g,"\u030Cж")
+                  .replace(/зо/g,"\u030Cз")
+                  .replace(/ко/g,"\u030Cк")
+                  .replace(/ло/g,"\u030Cл")
+                  .replace(/мо/g,"\u030Cм")
+                  .replace(/но/g,"\u030Cн")
+                  .replace(/по/g,"\u030Cп")
+                  .replace(/ро/g,"\u030Cр")
+                  .replace(/со/g,"\u030Cс")
+                  .replace(/то/g,"\u030Cт")
+                  .replace(/фо/g,"\u030Cф")
+                  .replace(/хо/g,"\u030Cх")
+                  .replace(/цо/g,"\u030Cц")
+                  .replace(/чо/g,"\u030Cч")
+                  .replace(/шо/g,"\u030Cш")
+                  .replace(/що/g,"\u030Cщ")
                   //е
-                  .replace(/бе/g,"б\u0308")
-                  .replace(/ве/g,"в\u0308")
-                  .replace(/ге/g,"г\u0308")
-                  .replace(/де/g,"д\u0308")
-                  .replace(/же/g,"ж\u0308")
-                  .replace(/зе/g,"з\u0308")
-                  .replace(/ке/g,"к\u0308")
-                  .replace(/ле/g,"л\u0308")
-                  .replace(/ме/g,"м\u0308")
-                  .replace(/не/g,"н\u0308")
-                  .replace(/пе/g,"п\u0308")
-                  .replace(/ре/g,"р\u0308")
-                  .replace(/се/g,"с\u0308")
-                  .replace(/те/g,"т\u0308")
-                  .replace(/фе/g,"ф\u0308")
-                  .replace(/хе/g,"х\u0308")
-                  .replace(/це/g,"ц\u0308")
-                  .replace(/че/g,"ч\u0308")
-                  .replace(/ше/g,"ш\u0308")
-                  .replace(/ще/g,"щ\u0308")
+                  .replace(/бе/g,"\u0308б")
+                  .replace(/ве/g,"\u0308в")
+                  .replace(/ге/g,"\u0308г")
+                  .replace(/де/g,"\u0308д")
+                  .replace(/же/g,"\u0308ж")
+                  .replace(/зе/g,"\u0308з")
+                  .replace(/ке/g,"\u0308к")
+                  .replace(/ле/g,"\u0308л")
+                  .replace(/ме/g,"\u0308м")
+                  .replace(/не/g,"\u0308н")
+                  .replace(/пе/g,"\u0308п")
+                  .replace(/ре/g,"\u0308р")
+                  .replace(/се/g,"\u0308с")
+                  .replace(/те/g,"\u0308т")
+                  .replace(/фе/g,"\u0308ф")
+                  .replace(/хе/g,"\u0308х")
+                  .replace(/це/g,"\u0308ц")
+                  .replace(/че/g,"\u0308ч")
+                  .replace(/ше/g,"\u0308ш")
+                  .replace(/ще/g,"\u0308щ")
                   //и
-                  .replace(/би/g,"б\u0307")
-                  .replace(/ви/g,"в\u0307")
-                  .replace(/ги/g,"г\u0307")
-                  .replace(/ди/g,"д\u0307")
-                  .replace(/жи/g,"ж\u0307")
-                  .replace(/зи/g,"з\u0307")
-                  .replace(/ки/g,"к\u0307")
-                  .replace(/ли/g,"л\u0307")
-                  .replace(/ми/g,"м\u0307")
-                  .replace(/ни/g,"н\u0307")
-                  .replace(/пи/g,"п\u0307")
-                  .replace(/ри/g,"р\u0307")
-                  .replace(/си/g,"с\u0307")
-                  .replace(/ти/g,"т\u0307")
-                  .replace(/фи/g,"ф\u0307")
-                  .replace(/хи/g,"х\u0307")
-                  .replace(/ци/g,"ц\u0307")
-                  .replace(/чи/g,"ч\u0307")
-                  .replace(/ши/g,"ш\u0307")
-                  .replace(/щи/g,"щ\u0307")
+                  .replace(/би/g,"\u0307б")
+                  .replace(/ви/g,"\u0307в")
+                  .replace(/ги/g,"\u0307г")
+                  .replace(/ди/g,"\u0307д")
+                  .replace(/жи/g,"\u0307ж")
+                  .replace(/зи/g,"\u0307з")
+                  .replace(/ки/g,"\u0307к")
+                  .replace(/ли/g,"\u0307л")
+                  .replace(/ми/g,"\u0307м")
+                  .replace(/ни/g,"\u0307н")
+                  .replace(/пи/g,"\u0307п")
+                  .replace(/ри/g,"\u0307р")
+                  .replace(/си/g,"\u0307с")
+                  .replace(/ти/g,"\u0307т")
+                  .replace(/фи/g,"\u0307ф")
+                  .replace(/хи/g,"\u0307х")
+                  .replace(/ци/g,"\u0307ц")
+                  .replace(/чи/g,"\u0307ч")
+                  .replace(/ши/g,"\u0307ш")
+                  .replace(/щи/g,"\u0307щ")
                   //а
-                  .replace(/ба/g,"б\u0302")
-                  .replace(/ва/g,"в\u0302")
-                  .replace(/га/g,"г\u0302")
-                  .replace(/да/g,"д\u0302")
-                  .replace(/жа/g,"ж\u0302")
-                  .replace(/за/g,"з\u0302")
-                  .replace(/ка/g,"к\u0302")
-                  .replace(/ла/g,"л\u0302")
-                  .replace(/ма/g,"м\u0302")
-                  .replace(/на/g,"н\u0302")
-                  .replace(/па/g,"п\u0302")
-                  .replace(/ра/g,"р\u0302")
-                  .replace(/са/g,"с\u0302")
-                  .replace(/та/g,"т\u0302")
-                  .replace(/фа/g,"ф\u0302")
-                  .replace(/ха/g,"х\u0302")
-                  .replace(/ца/g,"ц\u0302")
-                  .replace(/ча/g,"ч\u0302")
-                  .replace(/ша/g,"ш\u0302")
-                  .replace(/ща/g,"щ\u0302");
+                  .replace(/ба/g,"\u0302б")
+                  .replace(/ва/g,"\u0302в")
+                  .replace(/га/g,"\u0302г")
+                  .replace(/да/g,"\u0302д")
+                  .replace(/жа/g,"\u0302ж")
+                  .replace(/за/g,"\u0302з")
+                  .replace(/ка/g,"\u0302к")
+                  .replace(/ла/g,"\u0302л")
+                  .replace(/ма/g,"\u0302м")
+                  .replace(/на/g,"\u0302н")
+                  .replace(/па/g,"\u0302п")
+                  .replace(/ра/g,"\u0302р")
+                  .replace(/са/g,"\u0302с")
+                  .replace(/та/g,"\u0302т")
+                  .replace(/фа/g,"\u0302ф")
+                  .replace(/ха/g,"\u0302х")
+                  .replace(/ца/g,"\u0302ц")
+                  .replace(/ча/g,"\u0302ч")
+                  .replace(/ша/g,"\u0302ш")
+                  .replace(/ща/g,"\u0302щ");
               
               $scope.gibberishLength = $scope.gibberish.replace(/\u030C/g,"").replace(/\u0307/g,"").replace(/\u0308/g,"").replace(/\u0302/g,"").length;
               localStorage.setItem("text", $scope.text);
@@ -134,16 +134,16 @@
         <h3>Разшифровка:</h3>
         <table>
           <tr>
-            <td>б&#780; бо </td>
+            <td>&#780;б - бо </td>
           </tr>
           <tr>
-            <td>б&#776; бе</td>
+            <td>&#776;б - бе</td>
           </tr>
           <tr>
-            <td>б&#775; би</td>
+            <td>&#775;б - би</td>
           </tr>
           <tr>
-            <td>б&#770; ба</td>
+            <td>&#770;б - ба</td>
           </tr>
         </table>
     </div>
