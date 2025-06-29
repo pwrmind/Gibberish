@@ -1,156 +1,379 @@
 <!DOCTYPE html>
-<!-- saved from url=(0043)http://www.alekseybabanov.ru/gibberish.html -->
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>gibberish</title>
-        <script src="js/angular.min.js"></script>
-        <style>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ТекстоКомпакт</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-color);
+            color: var(--primary-color);
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+        }
+        
+        .subtitle {
+            color: var(--dark-color);
+            font-size: 1.1rem;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+        
+        textarea:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+        }
+        
+        .result-container {
+            position: relative;
+            background: #f9f9f9;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            min-height: 120px;
+            font-size: 18px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        
+        .copy-btn:hover {
+            background: #2980b9;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: #f8f9fa;
+            border-left: 4px solid var(--secondary-color);
+            padding: 12px;
+            border-radius: 4px;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+        }
+        
+        .legend-item {
+            padding: 8px;
+            background: #f0f7ff;
+            border-radius: 4px;
+            font-size: 16px;
+            text-align: center;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 600px) {
             body {
-                font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
-                font-size: 18px;
+                padding: 15px;
             }
-            pre {
-                font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
-                font-size: 18px;
-                white-space: pre-line;
+            
+            .container {
+                padding: 20px;
             }
-        </style>
-    </head>
-<body ng-app="gibberishApp">
-    <script>
-      /*
-      В русском языке 10 гласных букв (а, у, о, ы, и, э, я, ю, ё, е)
-      и 21 согласная буква (б, в, г, д, ж, з, й, к, л, м, н, п, р, с, т, ф, х, ц, ч, ш, щ).
-      Звонкими являются следующие буквы: б, в, г, д, ж, з, й, л, м, н, р.
-      Глухие буквы: к, п, с, т, ф, х, ц, ч, ш, щ.
-      */
-        var gibberishApp = angular.module('gibberishApp', []);
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ТекстоКомпакт</h1>
+        <p class="subtitle">Уменьшение длины текста с помощью диакритических знаков</p>
+    </header>
 
-        gibberishApp.controller('TranslatorCtrl', function TranslatorCtrl($scope) {
-            $scope.text = localStorage.getItem("text") || "";
-            $scope.gibberish = localStorage.getItem("gibberish") || "";
-            $scope.gibberishLength = 0;
-            $scope.change = function() {
-                $scope.gibberish = $scope.text
-                  .replace(/бо/g,"б\u030C").replace(/Бо/g,"Б\u030C")
-                  .replace(/во/g,"в\u030C").replace(/Во/g,"В\u030C")
-                  .replace(/го/g,"г\u030C").replace(/Го/g,"Г\u030C")
-                  .replace(/до/g,"д\u030C").replace(/До/g,"Д\u030C")
-                  .replace(/жо/g,"ж\u030C").replace(/Жо/g,"Ж\u030C")
-                  .replace(/зо/g,"з\u030C").replace(/Зо/g,"З\u030C")
-                  .replace(/ко/g,"к\u030C").replace(/Ко/g,"К\u030C")
-                  .replace(/ло/g,"л\u030C").replace(/Ло/g,"Л\u030C")
-                  .replace(/мо/g,"м\u030C").replace(/Мо/g,"М\u030C")
-                  .replace(/но/g,"н\u030C").replace(/Но/g,"Н\u030C")
-                  .replace(/по/g,"п\u030C").replace(/По/g,"П\u030C")
-                  .replace(/ро/g,"р\u030C").replace(/Ро/g,"Р\u030C")
-                  .replace(/со/g,"с\u030C").replace(/Со/g,"С\u030C")
-                  .replace(/то/g,"т\u030C").replace(/То/g,"Т\u030C")
-                  .replace(/фо/g,"ф\u030C").replace(/Фо/g,"Ф\u030C")
-                  .replace(/хо/g,"х\u030C").replace(/Хо/g,"Х\u030C")
-                  .replace(/цо/g,"ц\u030C").replace(/Цо/g,"Ц\u030C")
-                  .replace(/чо/g,"ч\u030C").replace(/Чо/g,"Ч\u030C")
-                  .replace(/шо/g,"ш\u030C").replace(/Шо/g,"Ш\u030C")
-                  .replace(/що/g,"щ\u030C").replace(/Що/g,"Щ\u030C")
-                  //е
-                  .replace(/бе/g,"б\u0308").replace(/Бе/g,"Б\u0308")
-                  .replace(/ве/g,"в\u0308").replace(/Ве/g,"В\u0308")
-                  .replace(/ге/g,"г\u0308").replace(/Ге/g,"Г\u0308")
-                  .replace(/де/g,"д\u0308").replace(/Де/g,"Д\u0308")
-                  .replace(/же/g,"ж\u0308").replace(/Же/g,"Ж\u0308")
-                  .replace(/зе/g,"з\u0308").replace(/Зе/g,"З\u0308")
-                  .replace(/ке/g,"к\u0308").replace(/Ке/g,"К\u0308")
-                  .replace(/ле/g,"л\u0308").replace(/Ле/g,"Л\u0308")
-                  .replace(/ме/g,"м\u0308").replace(/Ме/g,"М\u0308")
-                  .replace(/не/g,"н\u0308").replace(/Не/g,"Н\u0308")
-                  .replace(/пе/g,"п\u0308").replace(/Пе/g,"П\u0308")
-                  .replace(/ре/g,"р\u0308").replace(/Ре/g,"Р\u0308")
-                  .replace(/се/g,"с\u0308").replace(/Се/g,"С\u0308")
-                  .replace(/те/g,"т\u0308").replace(/Те/g,"Т\u0308")
-                  .replace(/фе/g,"ф\u0308").replace(/Фе/g,"Ф\u0308")
-                  .replace(/хе/g,"х\u0308").replace(/Хе/g,"Х\u0308")
-                  .replace(/це/g,"ц\u0308").replace(/Це/g,"Ц\u0308")
-                  .replace(/че/g,"ч\u0308").replace(/Че/g,"Ч\u0308")
-                  .replace(/ше/g,"ш\u0308").replace(/Ше/g,"Ш\u0308")
-                  .replace(/ще/g,"щ\u0308").replace(/Ще/g,"Щ\u0308")
-                  //и
-                  .replace(/би/g,"б\u0307").replace(/Би/g,"Б\u0307")
-                  .replace(/ви/g,"в\u0307").replace(/Ви/g,"В\u0307")
-                  .replace(/ги/g,"г\u0307").replace(/Ги/g,"Г\u0307")
-                  .replace(/ди/g,"д\u0307").replace(/Ди/g,"Д\u0307")
-                  .replace(/жи/g,"ж\u0307").replace(/Жи/g,"Ж\u0307")
-                  .replace(/зи/g,"з\u0307").replace(/Зи/g,"З\u0307")
-                  .replace(/ки/g,"к\u0307").replace(/Ки/g,"К\u0307")
-                  .replace(/ли/g,"л\u0307").replace(/Ли/g,"Л\u0307")
-                  .replace(/ми/g,"м\u0307").replace(/Ми/g,"М\u0307")
-                  .replace(/ни/g,"н\u0307").replace(/Ни/g,"Н\u0307")
-                  .replace(/пи/g,"п\u0307").replace(/Пи/g,"П\u0307")
-                  .replace(/ри/g,"р\u0307").replace(/Ри/g,"Р\u0307")
-                  .replace(/си/g,"с\u0307").replace(/Си/g,"С\u0307")
-                  .replace(/ти/g,"т\u0307").replace(/Ти/g,"Т\u0307")
-                  .replace(/фи/g,"ф\u0307").replace(/Фи/g,"Ф\u0307")
-                  .replace(/хи/g,"х\u0307").replace(/Хи/g,"Х\u0307")
-                  .replace(/ци/g,"ц\u0307").replace(/Ци/g,"Ц\u0307")
-                  .replace(/чи/g,"ч\u0307").replace(/Чи/g,"Ч\u0307")
-                  .replace(/ши/g,"ш\u0307").replace(/Ши/g,"Ш\u0307")
-                  .replace(/щи/g,"щ\u0307").replace(/Щи/g,"Щ\u0307")
-                  //а
-                  .replace(/ба/g,"б\u0302").replace(/Ба/g,"Б\u0302")
-                  .replace(/ва/g,"в\u0302").replace(/Ва/g,"В\u0302")
-                  .replace(/га/g,"г\u0302").replace(/Га/g,"Г\u0302")
-                  .replace(/да/g,"д\u0302").replace(/Да/g,"Д\u0302")
-                  .replace(/жа/g,"ж\u0302").replace(/Жа/g,"Ж\u0302")
-                  .replace(/за/g,"з\u0302").replace(/За/g,"З\u0302")
-                  .replace(/ка/g,"к\u0302").replace(/Ка/g,"К\u0302")
-                  .replace(/ла/g,"л\u0302").replace(/Ла/g,"Л\u0302")
-                  .replace(/ма/g,"м\u0302").replace(/Ма/g,"М\u0302")
-                  .replace(/на/g,"н\u0302").replace(/На/g,"Н\u0302")
-                  .replace(/па/g,"п\u0302").replace(/Па/g,"П\u0302")
-                  .replace(/ра/g,"р\u0302").replace(/Ра/g,"Р\u0302")
-                  .replace(/са/g,"с\u0302").replace(/Са/g,"С\u0302")
-                  .replace(/та/g,"т\u0302").replace(/Та/g,"Т\u0302")
-                  .replace(/фа/g,"ф\u0302").replace(/Фа/g,"Ф\u0302")
-                  .replace(/ха/g,"х\u0302").replace(/Ха/g,"Х\u0302")
-                  .replace(/ца/g,"ц\u0302").replace(/Ца/g,"Ц\u0302")
-                  .replace(/ча/g,"ч\u0302").replace(/Ча/g,"Ч\u0302")
-                  .replace(/ша/g,"ш\u0302").replace(/Ша/g,"Ш\u0302")
-                  .replace(/ща/g,"щ\u0302").replace(/Ща/g,"Щ\u0302");
-              
-              $scope.gibberishLength = $scope.gibberish.replace(/\u030C/g,"").replace(/\u0307/g,"").replace(/\u0308/g,"").replace(/\u0302/g,"").length;
-              localStorage.setItem("text", $scope.text);
-              localStorage.setItem("gibberish", $scope.gibberish);
-            };
+    <main>
+        <div class="container">
+            <h2>Исходный текст:</h2>
+            <textarea id="sourceText" placeholder="Введите текст здесь..."></textarea>
+        </div>
+        
+        <div class="container">
+            <h2>Результат:</h2>
+            <div class="result-container">
+                <pre id="result"></pre>
+                <button class="copy-btn" id="copyBtn">Копировать</button>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="stats">
+                <div class="stat-card">
+                    <div>Исходный размер:</div>
+                    <div class="stat-value" id="originalSize">0</div>
+                </div>
+                <div class="stat-card">
+                    <div>Новый размер:</div>
+                    <div class="stat-value" id="newSize">0</div>
+                </div>
+                <div class="stat-card">
+                    <div>Сэкономлено:</div>
+                    <div class="stat-value" id="saved">0</div>
+                </div>
+                <div class="stat-card">
+                    <div>Сжатие:</div>
+                    <div class="stat-value" id="compression">0%</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container">
+            <h2>Система обозначений:</h2>
+            <div class="legend">
+                <div class="legend-item">б&#780; = бо</div>
+                <div class="legend-item">б&#776; = бе</div>
+                <div class="legend-item">б&#775; = би</div>
+                <div class="legend-item">б&#770; = ба</div>
+                <div class="legend-item">г&#780; = го</div>
+                <div class="legend-item">к&#776; = ке</div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="footer">
+        <p>Использует диакритические знаки для сокращения текста</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sourceText = document.getElementById('sourceText');
+            const result = document.getElementById('result');
+            const copyBtn = document.getElementById('copyBtn');
+            const originalSizeEl = document.getElementById('originalSize');
+            const newSizeEl = document.getElementById('newSize');
+            const savedEl = document.getElementById('saved');
+            const compressionEl = document.getElementById('compression');
+            
+            // Загрузка сохраненных данных
+            const savedText = localStorage.getItem('text') || '';
+            const savedGibberish = localStorage.getItem('gibberish') || '';
+            
+            sourceText.value = savedText;
+            result.textContent = savedGibberish;
+            updateStats(savedText, savedGibberish);
+            
+            // Обработка ввода текста
+            sourceText.addEventListener('input', () => {
+                const text = sourceText.value;
+                const gibberish = convertText(text);
+                
+                result.textContent = gibberish;
+                updateStats(text, gibberish);
+                
+                // Сохранение в localStorage
+                localStorage.setItem('text', text);
+                localStorage.setItem('gibberish', gibberish);
+            });
+            
+            // Кнопка копирования
+            copyBtn.addEventListener('click', () => {
+                const textarea = document.createElement('textarea');
+                textarea.value = result.textContent;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                
+                // Визуальная обратная связь
+                copyBtn.textContent = 'Скопировано!';
+                setTimeout(() => {
+                    copyBtn.textContent = 'Копировать';
+                }, 1500);
+            });
+            
+            function convertText(text) {
+                return text
+                    // Замена для "о"
+                    .replace(/бо/g,"б\u030C").replace(/Бо/g,"Б\u030C")
+                    .replace(/во/g,"в\u030C").replace(/Во/g,"В\u030C")
+                    .replace(/го/g,"г\u030C").replace(/Го/g,"Г\u030C")
+                    .replace(/до/g,"д\u030C").replace(/До/g,"Д\u030C")
+                    .replace(/жо/g,"ж\u030C").replace(/Жо/g,"Ж\u030C")
+                    .replace(/зо/g,"з\u030C").replace(/Зо/g,"З\u030C")
+                    .replace(/ко/g,"к\u030C").replace(/Ко/g,"К\u030C")
+                    .replace(/ло/g,"л\u030C").replace(/Ло/g,"Л\u030C")
+                    .replace(/мо/g,"м\u030C").replace(/Мо/g,"М\u030C")
+                    .replace(/но/g,"н\u030C").replace(/Но/g,"Н\u030C")
+                    .replace(/по/g,"п\u030C").replace(/По/g,"П\u030C")
+                    .replace(/ро/g,"р\u030C").replace(/Ро/g,"Р\u030C")
+                    .replace(/со/g,"с\u030C").replace(/Со/g,"С\u030C")
+                    .replace(/то/g,"т\u030C").replace(/То/g,"Т\u030C")
+                    .replace(/фо/g,"ф\u030C").replace(/Фо/g,"Ф\u030C")
+                    .replace(/хо/g,"х\u030C").replace(/Хо/g,"Х\u030C")
+                    .replace(/цо/g,"ц\u030C").replace(/Цо/g,"Ц\u030C")
+                    .replace(/чо/g,"ч\u030C").replace(/Чо/g,"Ч\u030C")
+                    .replace(/шо/g,"ш\u030C").replace(/Шо/g,"Ш\u030C")
+                    .replace(/що/g,"щ\u030C").replace(/Що/g,"Щ\u030C")
+                    
+                    // Замена для "е"
+                    .replace(/бе/g,"б\u0308").replace(/Бе/g,"Б\u0308")
+                    .replace(/ве/g,"в\u0308").replace(/Ве/g,"В\u0308")
+                    .replace(/ге/g,"г\u0308").replace(/Ге/g,"Г\u0308")
+                    .replace(/де/g,"д\u0308").replace(/Де/g,"Д\u0308")
+                    .replace(/же/g,"ж\u0308").replace(/Же/g,"Ж\u0308")
+                    .replace(/зе/g,"з\u0308").replace(/Зе/g,"З\u0308")
+                    .replace(/ке/g,"к\u0308").replace(/Ке/g,"К\u0308")
+                    .replace(/ле/g,"л\u0308").replace(/Ле/g,"Л\u0308")
+                    .replace(/ме/g,"м\u0308").replace(/Ме/g,"М\u0308")
+                    .replace(/не/g,"н\u0308").replace(/Не/g,"Н\u0308")
+                    .replace(/пе/g,"п\u0308").replace(/Пе/g,"П\u0308")
+                    .replace(/ре/g,"р\u0308").replace(/Ре/g,"Р\u0308")
+                    .replace(/се/g,"с\u0308").replace(/Се/g,"С\u0308")
+                    .replace(/те/g,"т\u0308").replace(/Те/g,"Т\u0308")
+                    .replace(/фе/g,"ф\u0308").replace(/Фе/g,"Ф\u0308")
+                    .replace(/хе/g,"х\u0308").replace(/Хе/g,"Х\u0308")
+                    .replace(/це/g,"ц\u0308").replace(/Це/g,"Ц\u0308")
+                    .replace(/че/g,"ч\u0308").replace(/Че/g,"Ч\u0308")
+                    .replace(/ше/g,"ш\u0308").replace(/Ше/g,"Ш\u0308")
+                    .replace(/ще/g,"щ\u0308").replace(/Ще/g,"Щ\u0308")
+                    
+                    // Замена для "и"
+                    .replace(/би/g,"б\u0307").replace(/Би/g,"Б\u0307")
+                    .replace(/ви/g,"в\u0307").replace(/Ви/g,"В\u0307")
+                    .replace(/ги/g,"г\u0307").replace(/Ги/g,"Г\u0307")
+                    .replace(/ди/g,"д\u0307").replace(/Ди/g,"Д\u0307")
+                    .replace(/жи/g,"ж\u0307").replace(/Жи/g,"Ж\u0307")
+                    .replace(/зи/g,"з\u0307").replace(/Зи/g,"З\u0307")
+                    .replace(/ки/g,"к\u0307").replace(/Ки/g,"К\u0307")
+                    .replace(/ли/g,"л\u0307").replace(/Ли/g,"Л\u0307")
+                    .replace(/ми/g,"м\u0307").replace(/Ми/g,"М\u0307")
+                    .replace(/ни/g,"н\u0307").replace(/Ни/g,"Н\u0307")
+                    .replace(/пи/g,"п\u0307").replace(/Пи/g,"П\u0307")
+                    .replace(/ри/g,"р\u0307").replace(/Ри/g,"Р\u0307")
+                    .replace(/си/g,"с\u0307").replace(/Си/g,"С\u0307")
+                    .replace(/ти/g,"т\u0307").replace(/Ти/g,"Т\u0307")
+                    .replace(/фи/g,"ф\u0307").replace(/Фи/g,"Ф\u0307")
+                    .replace(/хи/g,"х\u0307").replace(/Хи/g,"Х\u0307")
+                    .replace(/ци/g,"ц\u0307").replace(/Ци/g,"Ц\u0307")
+                    .replace(/чи/g,"ч\u0307").replace(/Чи/g,"Ч\u0307")
+                    .replace(/ши/g,"ш\u0307").replace(/Ши/g,"Ш\u0307")
+                    .replace(/щи/g,"щ\u0307").replace(/Щи/g,"Щ\u0307")
+                    
+                    // Замена для "а"
+                    .replace(/ба/g,"б\u0302").replace(/Ба/g,"Б\u0302")
+                    .replace(/ва/g,"в\u0302").replace(/Ва/g,"В\u0302")
+                    .replace(/га/g,"г\u0302").replace(/Га/g,"Г\u0302")
+                    .replace(/да/g,"д\u0302").replace(/Да/g,"Д\u0302")
+                    .replace(/жа/g,"ж\u0302").replace(/Жа/g,"Ж\u0302")
+                    .replace(/за/g,"з\u0302").replace(/За/g,"З\u0302")
+                    .replace(/ка/g,"к\u0302").replace(/Ка/g,"К\u0302")
+                    .replace(/ла/g,"л\u0302").replace(/Ла/g,"Л\u0302")
+                    .replace(/ма/g,"м\u0302").replace(/Ма/g,"М\u0302")
+                    .replace(/на/g,"н\u0302").replace(/На/g,"Н\u0302")
+                    .replace(/па/g,"п\u0302").replace(/Па/g,"П\u0302")
+                    .replace(/ра/g,"р\u0302").replace(/Ра/g,"Р\u0302")
+                    .replace(/са/g,"с\u0302").replace(/Са/g,"С\u0302")
+                    .replace(/та/g,"т\u0302").replace(/Та/g,"Т\u0302")
+                    .replace(/фа/g,"ф\u0302").replace(/Фа/g,"Ф\u0302")
+                    .replace(/ха/g,"х\u0302").replace(/Ха/g,"Х\u0302")
+                    .replace(/ца/g,"ц\u0302").replace(/Ца/g,"Ц\u0302")
+                    .replace(/ча/g,"ч\u0302").replace(/Ча/g,"Ч\u0302")
+                    .replace(/ша/g,"ш\u0302").replace(/Ша/g,"Ш\u0302")
+                    .replace(/ща/g,"щ\u0302").replace(/Ща/g,"Щ\u0302");
+            }
+            
+            function updateStats(original, converted) {
+                const originalLength = original.length;
+                const convertedLength = converted.replace(/[\u0300-\u036f]/g, '').length;
+                const saved = originalLength - convertedLength;
+                const compression = originalLength > 0 
+                    ? Math.round((saved / originalLength) * 100)
+                    : 0;
+                
+                originalSizeEl.textContent = originalLength;
+                newSizeEl.textContent = convertedLength;
+                savedEl.textContent = saved;
+                compressionEl.textContent = `${compression}%`;
+            }
         });
     </script>
-    
-    <div ng-controller="TranslatorCtrl">
-        <div>
-            <h2>Вставьте или введите текст:</h2>
-            <textarea name="text" id="text" cols="60" rows="3" ng-model="text" ng-change="change()"></textarea>
-        </div>
-        <div>
-            <h2>Тарабарщина:</h2>
-            <pre id="gibberish"> {{ gibberish }} </pre>
-        </div>
-        <h3>Статистика:</h3>
-        <div> {{ text.length }} - {{ gibberishLength }} = {{ text.length - gibberishLength }} <div>
-        <div>% {{ gibberishLength }} * 100 : {{ text.length }} = {{ gibberishLength * 100 / text.length }} <div>
-        <h3>Разшифровка:</h3>
-        <table>
-          <tr>
-            <td>б&#780; - бо; Б&#780; - Бо</td>
-          </tr>
-          <tr>
-            <td>б&#776; - бе</td>
-          </tr>
-          <tr>
-            <td>б&#775; - би</td>
-          </tr>
-          <tr>
-            <td>б&#770; - ба</td>
-          </tr>
-        </table>
-    </div>
 </body>
 </html>
